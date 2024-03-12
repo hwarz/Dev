@@ -8,3 +8,4 @@ class FieldIndexError(IndexError):
 class CellOccupiedError(Exception):
     def __str__(self):
         return 'Попытка изменить занятую ячейку'
+    

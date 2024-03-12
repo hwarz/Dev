@@ -1,5 +1,5 @@
 from gameparts import Board
-from gameparts.exceptions import FieldIndexError
+from gameparts.exceptions import FieldIndexError, CellOccupiedError
 
 
 def main():
@@ -29,6 +29,8 @@ def main():
                 y = int(input('Введите номер столбца: '))
                 if y < 0 or y >= game.field_size:
                     raise FieldIndexError
+                if game.board[x][y] != ' ':
+                    raise CellOccupiedError
             # Если возникает исключение FieldIndexError...
             except FieldIndexError:
             # ...выводятся сообщения...
@@ -44,6 +46,10 @@ def main():
             except ValueError:
                 print('Буквы вводить нельзя. Только числа.')
                 print('Пожалуйста, введите значения для строки и столбца заново.')
+                continue
+            except CellOccupiedError:
+                print('Ячейка занята')
+                print('Введите другие координаты.')
                 continue
             except Exception as e:
                 print(f'Возникла ошибка: {e}')
