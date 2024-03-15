@@ -41,4 +41,4 @@ class Board:
            self.board[0][2] == self.board[1][1] == self.board[2][0] == player 
         ):
             return True
-        
+         

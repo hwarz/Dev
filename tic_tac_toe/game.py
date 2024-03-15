@@ -74,6 +74,7 @@ def main():
             running - False
         elif game.is_board_full():
             print('Ничья!')
+            result_str = 'Ничья!'
             running = False    
     # Теперь для установки значения на поле само значение берётся
     # из переменной current_player.
