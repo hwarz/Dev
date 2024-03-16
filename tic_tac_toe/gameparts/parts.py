@@ -43,6 +43,7 @@ class Board:
             return True
         
     def save_result(self, result_str):
-        file = open('results.txt', 'a', encoding='utf-8')
-        file.write(result_str + '\n')
-        file.close()
+        # file = open('results.txt', 'a', encoding='utf-8')
+        with open('results.txt', 'a', encoding='utf-8') as f:
+            f.write(result_str + '\n')
+        # file.close()
