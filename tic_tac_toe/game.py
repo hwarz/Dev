@@ -60,16 +60,38 @@ def draw_figures(board):
                     screen,
                     X_COLOR,
                     (col * CELL_SIZE + SPACE, row * CELL_SIZE + SPACE),
-                    (
+                    (                   # рисует \
                         col * CELL_SIZE + CELL_SIZE - SPACE,
                         row * CELL_SIZE + CELL_SIZE - SPACE
                     ),
                     X_WIDTH
                 )
-                
-
-
-
+                pygame.draw.line(
+                    screen,
+                    X_COLOR,
+                    (             # рисует /
+                        col * CELL_SIZE + SPACE,
+                        row * CELL_SIZE + CELL_SIZE - SPACE
+                    ),
+                    (
+                        col * CELL_SIZE + CELL_SIZE - SPACE,
+                        row * CELL_SIZE + SPACE
+                    ),
+                    X_WIDTH    
+                )
+            elif board[row][col] == 'O':
+                pygame.draw.circle(
+                    screen,
+                    O_COLOR,
+                    (
+                        col * CELL_SIZE + CELL_SIZE // 2,
+                        row * CELL_SIZE + CELL_SIZE // 2
+                    ),
+                    CELL_SIZE // 2 - SPACE,
+                    O_WIDTH
+                )
+# Сюда нужно добавить функцию save_result().
+....
 
 
 
@@ -82,36 +104,47 @@ def main():
     current_player = 'X'
     # Это флаговая переменная. По умолчанию игра запущена и продолжается.
     running = True
-
+    draw_lines()
 # Отрисовать поле в терминале.
-    game.display()
+    # game.display()
 # Тут запускается основной цикл игры.
+    
     while running:
-        print(f'Ход делают {current_player}')
+        # print(f'Ход делают {current_player}')
+        for event in pygame.event.QUIT:
+            running = False
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_y = event.pos[0]
+            mouse_x = event.pos[1]
+
+            clicked_row = mouse_x // CELL_SIZE
+            clicked_col = mouse_y // CELL_SIZE
+
 
         while True:
             try:
             # Тут пользователь вводит координаты ячейки.
-                x = int(input('Введите номер строки: '))
+               # x = int(input('Введите номер строки: '))
     # Если введённое значение меньше нуля или больше или равно
     # field_size (это значение равно трём, оно хранится в модуле
     # parts.py)...
-                if x < 0 or x >= game.field_size:
+                # if x < 0 or x >= game.field_size:
         # ...выбросить исключение FieldIndexError.
-                    raise FieldIndexError
-                y = int(input('Введите номер столбца: '))
-                if y < 0 or y >= game.field_size:
-                    raise FieldIndexError
+                    # raise FieldIndexError
+                # y = int(input('Введите номер столбца: '))
+                #if y < 0 or y >= game.field_size:
+                    # raise FieldIndexError
                 if game.board[x][y] != ' ':
                     raise CellOccupiedError
             # Если возникает исключение FieldIndexError...
-            except FieldIndexError:
+            #except FieldIndexError:
             # ...выводятся сообщения...
-                print(
-                'Значение должно быть неотрицательным и меньше '
-                f'{game.field_size}.'
-                )
-                print('Пожалуйста, введите значения для строки и столбца заново.')
+             #   print(
+             #   'Значение должно быть неотрицательным и меньше '
+             ##   f'{game.field_size}.'
+             #   )
+             #   print('Пожалуйста, введите значения для строки и столбца заново.')
             # ...и цикл начинает свою работу сначала,
             # предоставляя пользователю ещё одну попытку ввести данные.
                 continue
