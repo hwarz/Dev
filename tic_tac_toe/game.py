@@ -52,6 +52,7 @@ def draw_lines():
 
     # Функция, которая отвечает за отрисовку фигур 
     # (крестиков и ноликов) на доске.
+
 def draw_figures(board):
     for row in range(BOARD_SIZE):
         for col in range(BOARD_SIZE):
@@ -79,7 +80,7 @@ def draw_figures(board):
                     ),
                     X_WIDTH    
                 )
-            elif board[row][col] == 'O':
+            elif board[row][col] == '0':
                 pygame.draw.circle(
                     screen,
                     O_COLOR,
@@ -91,10 +92,6 @@ def draw_figures(board):
                     O_WIDTH
                 )
 # Сюда нужно добавить функцию save_result().
-....
-
-
-
 
 
 def main():
@@ -111,19 +108,20 @@ def main():
     
     while running:
         # print(f'Ход делают {current_player}')
-        for event in pygame.event.QUIT:
-            running = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_y = event.pos[0]
-            mouse_x = event.pos[1]
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_y = event.pos[0]
+                mouse_x = event.pos[1]
 
-            clicked_row = mouse_x // CELL_SIZE
-            clicked_col = mouse_y // CELL_SIZE
+                clicked_row = mouse_x // CELL_SIZE
+                clicked_col = mouse_y // CELL_SIZE
 
 
-        while True:
-            try:
+        #while True:
+        #    try:
             # Тут пользователь вводит координаты ячейки.
                # x = int(input('Введите номер строки: '))
     # Если введённое значение меньше нуля или больше или равно
@@ -135,8 +133,8 @@ def main():
                 # y = int(input('Введите номер столбца: '))
                 #if y < 0 or y >= game.field_size:
                     # raise FieldIndexError
-                if game.board[x][y] != ' ':
-                    raise CellOccupiedError
+                if game.board[clicked_row][clicked_col] == ' ':
+                    # raise CellOccupiedError
             # Если возникает исключение FieldIndexError...
             #except FieldIndexError:
             # ...выводятся сообщения...
@@ -147,45 +145,52 @@ def main():
              #   print('Пожалуйста, введите значения для строки и столбца заново.')
             # ...и цикл начинает свою работу сначала,
             # предоставляя пользователю ещё одну попытку ввести данные.
-                continue
+            #    continue
         # Если в блоке try исключения не возникло...
-            except ValueError:
-                print('Буквы вводить нельзя. Только числа.')
-                print('Пожалуйста, введите значения для строки и столбца заново.')
-                continue
-            except CellOccupiedError:
-                print('Ячейка занята')
-                print('Введите другие координаты.')
-                continue
-            except Exception as e:
-                print(f'Возникла ошибка: {e}')
-                continue
-            else:
+            # except ValueError:
+            #    print('Буквы вводить нельзя. Только числа.')
+            #    print('Пожалуйста, введите значения для строки и столбца заново.')
+            #    continue
+            # except CellOccupiedError:
+            #    print('Ячейка занята')
+            #    print('Введите другие координаты.')
+            #    continue
+            # except Exception as e:
+            #    print(f'Возникла ошибка: {e}')
+            #    continue
+            # else:
             # ...значит, введённые значения прошли все проверки
             # и могут быть использованы в дальнейшем.
             # Цикл прерывается.
-                break
+            #    break
   
 
 # Разместить на поле символ по указанным координатам - сделать ход.
 # Теперь для установки значения на поле само значение берётся
 # из переменной current_player.              
-        game.make_move(x, y, current_player)
+                    game.make_move(clicked_row, clicked_col, current_player)
     # print('Ход сделан!')
     # Перерисовать поле с учётом сделанного хода.
-        game.display()
+        # game.display()
     # После каждого хода надо делать проверку на победу и на ничью.
-        if game.check_win(current_player):
-            print(f'Победили {current_player}!')
-            game.save_result(f'Победили {current_player}!')
-            running - False
-        elif game.is_board_full():
-            print('Ничья!')
-            game.save_result('Ничья!')
-            running = False
+                    if game.check_win(current_player):
+                        result = f'Победили {current_player}.'
+                        print(result)
+                        game.save_result(result)
+                        running = False
+                    elif game.is_board_full():
+                        result = 'Ничья'
+                        print(result)
+                        game.save_result(result)
+                        running = False
     # Теперь для установки значения на поле само значение берётся
     # из переменной current_player.
-        current_player = '0' if current_player == 'X' else 'X'
+                    current_player = '0' if current_player == 'X' else 'X'
+                    draw_figures(game.board)
+
+        pygame.display.update()
+
+    pygame.quit()                
     
 
 if __name__ == '__main__':
